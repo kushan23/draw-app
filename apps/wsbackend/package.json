@@ -13,6 +13,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/ws": "^8.18.0",
     "jsonwebtoken": "^9.0.2",
+    "@repo/db": "workspace:*",
     "ws": "^8.18.1"
   },
   "keywords": [],

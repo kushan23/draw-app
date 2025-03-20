@@ -2,10 +2,8 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "./config";
 import { middleware } from "./middleware";
-// const { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types";
 const { CreateUserSchema, SigninSchema, CreateRoomSchema } = require("@repo/common/types")
 const { prismaClient } = require("@repo/db/client")
-// import { prismaClient } from "@repo/db/client";
 import cors from "cors";
 
 const app = express();
@@ -26,7 +24,6 @@ app.post("/signup", async (req, res) => {
         const user = await prismaClient.user.create({
             data: {
                 email: parsedData.data?.username,
-                // TODO: Hash the pw
                 password: parsedData.data.password,
                 name: parsedData.data.name
             }
@@ -50,7 +47,6 @@ app.post("/signin", async (req, res) => {
         return;
     }
 
-    // TODO: Compare the hashed pws here
     const user = await prismaClient.user.findFirst({
         where: {
             email: parsedData.data.username,
@@ -101,6 +97,37 @@ app.post("/room", middleware, async (req, res) => {
             message: "Room already exists with this name"
         })
     }
+})
+
+app.get("/chats/:roomId", async (req,res) => {
+    const roomId = Number(req.params.roomId);
+    console.log(roomId);
+    const messages = await prismaClient.chat.findMany({
+        where:{
+            roomId: roomId
+        },
+        orderBy:{
+            id: "desc"
+        },
+        take: 50
+    });
+
+    res.json({
+        messages
+    })
+});
+
+app.get("/room/:slug", async (req, res) => {
+    const slug = req.params.slug;
+    const room = await prismaClient.room.findFirst({
+        where: {
+            slug
+        }
+    });
+
+    res.json({
+        room
+    })
 })
 
 
