@@ -1,5 +1,4 @@
 import { useEffect,useRef, useState } from "react"
-import { Draw } from "@/draw";
 import { IconButton } from "./IconButton";
 import { Circle, Pencil, RectangleHorizontalIcon } from "lucide-react";
 import { Game } from "@/draw/Game";
@@ -38,7 +37,7 @@ export function Canvas({
 
     return <div style={{
         height: "100vh",
-        background: 'red',
+        background: 'black',
         overflow: "hidden"
     }}>
         <canvas ref={canvasRef} width={window.innerWidth} height={window.innerHeight}></canvas>
@@ -51,7 +50,7 @@ function Bar({tool,setTool} : {
 }) {
     return <div style={{
         position: 'fixed',
-        top:10,
+        top: 10,
         left:650
     }}>
         <div className="flex pl-2">
