@@ -20,9 +20,12 @@ export function AuthPage({isSignin} : {
                 password
             }
         })
+    
     const jwt = response.data.token;
+    if(jwt){
     alert("You are " + url);
     localStorage.setItem('token', jwt);
+    }
     // navigate('/page');
 
     }
@@ -36,8 +39,7 @@ export function AuthPage({isSignin} : {
                 <input type="password" ref={passwordref} placeholder="Password"></input>
                 </div>
                 <div className="pt-2 flex items-center justify-center">
-                <button onClick={() =>{
-                }}>
+                <button onClick={login}>
                     {isSignin ? "Sign In" : "Sign Up"}
                 </button>
                 </div>
