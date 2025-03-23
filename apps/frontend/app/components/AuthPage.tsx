@@ -1,32 +1,45 @@
 "use client"
-
 import axios from "axios";
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config";
+import { useRouter } from 'next/navigation'
 export function AuthPage({isSignin} : {
     isSignin: boolean
 }){
-    // const navigate = useNavigate();
     const usernameref = useRef<HTMLInputElement>(null);
     const passwordref = useRef<HTMLInputElement>(null);
+    const router = useRouter();
     async function login () {
         const username = usernameref.current?.value;
         const password = passwordref.current?.value;
+        const name = "user";
+        let response = null;
         const url = isSignin ? "signin" : "signup"
-        const response = await axios.post(`${BACKEND_URL}/${url}`,{
-            data:{
+        console.log(username);
+        console.log(password);
+        if(url === "signin") {
+        response = await axios.post(`${BACKEND_URL}/${url}`,{
                 username,
-                password
-            }
+                password,
         })
-    
-    const jwt = response.data.token;
+        }
+        else if (url === "signup"){
+            response = await axios.post(`${BACKEND_URL}/${url}`,{
+                username,
+                password,
+                name
+        })
+        
+        }
+    const jwt = response?.data.token;
+    console.log(response)
+    console.log(jwt);
     if(jwt){
-    alert("You are " + url);
     localStorage.setItem('token', jwt);
+    // router.push('/canvas/10')
     }
-    // navigate('/page');
+    
 
     }
 

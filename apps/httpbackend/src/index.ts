@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(cors())
 
 app.post("/signup", async (req, res) => {
-
     const parsedData = CreateUserSchema.safeParse(req.body);
     if (!parsedData.success) {
         console.log(parsedData.error);
@@ -28,8 +27,14 @@ app.post("/signup", async (req, res) => {
                 name: parsedData.data.name
             }
         })
+        const token = jwt.sign({
+            userId: user?.id
+        }, JWT_SECRET);
         res.json({
-            userId: user.id
+            token
+        })
+        res.json({
+            token
         })
     } catch(e) {
         res.status(411).json({
@@ -39,35 +44,33 @@ app.post("/signup", async (req, res) => {
 })
 
 app.post("/signin", async (req, res) => {
+    console.log("Hello")
+    console.log(req.body)
     const parsedData = SigninSchema.safeParse(req.body);
+    console.log(parsedData);
     if (!parsedData.success) {
         res.json({
             message: "Incorrect inputs"
         })
         return;
     }
-
+    try {
     const user = await prismaClient.user.findFirst({
         where: {
-            email: parsedData.data.username,
-            password: parsedData.data.password
+            email: req.body.username,
+            password: req.body.password
         }
     })
-
-    if (!user) {
-        res.status(403).json({
-            message: "Not authorized"
-        })
-        return;
-    }
-
     const token = jwt.sign({
         userId: user?.id
     }, JWT_SECRET);
-
     res.json({
         token
     })
+}catch(e){
+    console.log(e);
+}
+
 })
 
 app.post("/room", middleware, async (req, res) => {
@@ -109,13 +112,21 @@ app.get("/chats/:roomId", async (req,res) => {
         orderBy:{
             id: "desc"
         },
-        take: 50
+        take: 1000
     });
 
     res.json({
         messages
     })
 });
+
+app.get("/allrooms", middleware, async(req,res) => {
+    const rooms = await prismaClient.room.findMany();
+    console.log(rooms);
+    res.json({
+        rooms
+    })
+})
 
 app.get("/room/:slug", async (req, res) => {
     const slug = req.params.slug;

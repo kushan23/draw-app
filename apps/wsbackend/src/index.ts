@@ -81,6 +81,7 @@ wss.on('connection', function connection(ws,request) {
             if(!user){
                 return;
             }
+            console.log("Leave room trigered");
             user.rooms = user?.rooms.filter(x => x !== parsedData.roomId);
         }
 
