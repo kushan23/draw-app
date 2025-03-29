@@ -2,7 +2,6 @@ import { useEffect,useRef, useState } from "react"
 import { IconButton } from "./IconButton";
 import { Circle, Pencil, RectangleHorizontalIcon, LogOut, LogOutIcon} from "lucide-react";
 import { useRouter } from 'next/navigation'
-
 import { Game } from "@/draw/Game";
 import { Socket } from "dgram";
 

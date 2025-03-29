@@ -75,6 +75,8 @@ app.post("/signin", async (req, res) => {
 
 app.post("/room", middleware, async (req, res) => {
     const parsedData = CreateRoomSchema.safeParse(req.body);
+    console.log("creating room");
+    console.log(parsedData);
     if (!parsedData.success) {
         res.json({
             message: "Incorrect inputs"
@@ -122,7 +124,6 @@ app.get("/chats/:roomId", async (req,res) => {
 
 app.get("/allrooms", middleware, async(req,res) => {
     const rooms = await prismaClient.room.findMany();
-    console.log(rooms);
     res.json({
         rooms
     })

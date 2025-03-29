@@ -37,7 +37,7 @@ export function AuthPage({isSignin} : {
     console.log(jwt);
     if(jwt){
     localStorage.setItem('token', jwt);
-    // router.push('/canvas/10')
+    router.push('/rooms')
     }
     
 
