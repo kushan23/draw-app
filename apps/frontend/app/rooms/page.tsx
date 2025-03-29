@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 
 export default function RoomPage() {
-    const [room,setRooms] = useState([]);
+    const [room,setRooms] = useState<any[]>([])
     const router = useRouter();
     
     function onJoinRoom(roomId: string){
@@ -45,21 +45,21 @@ export default function RoomPage() {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {room.length > 0 ? (
-                room.map((room) => (
+                room.map((r) => (
                     <div
-                            key={room.id}
+                            key={r.id}
                             className="bg-gray-800 shadow-md rounded-xl p-6 hover:shadow-lg transition duration-300 transform hover:scale-105"
                         >
                             <h2 className="text-xl font-semibold text-blue-400 mb-2">
-                                Room ID: {room.id}
+                                Room ID: {r.id}
                             </h2>
                             <p className="text-gray-300 mb-4">
-                                Name: <span className="font-medium">{room.slug}</span>
+                                Name: <span className="font-medium">{r.slug}</span>
                             </p>
                             
                             {/* Join Room Button */}
                             <button
-                                onClick={() => onJoinRoom(room.id)}
+                                onClick={() => onJoinRoom(r.id)}
                                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 w-full"
                             >
                                 Join Room
